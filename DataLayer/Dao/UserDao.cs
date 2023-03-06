@@ -2,6 +2,8 @@
 using PagedList;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,9 +45,28 @@ namespace DataLayer.Dao
         {
             return db.Users.SingleOrDefault(x => x.UserName == userName);
         }
-        public IEnumerable<User> ListPaging(int page, int pageSize)
+        public IEnumerable<User> ListPaging(string searchString, bool roleFilter,  int page, int pageSize)
         {
-            return db.Users.OrderBy(x => x.Create_at).ToPagedList(page, pageSize);
+            IQueryable<User> model = db.Users;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                model = model.Where(x => x.UserName.Contains(searchString) || x.Email.Contains(searchString));
+                if (model == null)
+                {
+                    return null;
+                }
+            }
+            if (roleFilter )
+            {
+                model = model.Where(x => x.Role == 1);
+            }
+
+            /* if (statusFilter.HasValue)
+             {
+                 model = model.Where(u => u.Status == statusFilter);               
+             }
+             */
+            return model.OrderBy(x => x.Create_at).ToPagedList(page, pageSize);
         }
         public void Update(User entity)
         {
@@ -58,15 +79,26 @@ namespace DataLayer.Dao
                 db.SaveChanges();
             }
         }
-        public void Delete(int id)
+        public bool Delete(int id)
         {
-            var user = db.Users.SingleOrDefault(x => x.ID == id);
-            if(user.Status == 1)
+            using (var context = new NTQDBContext())
             {
+                var user = context.Users.Find(id);
+                if (user == null)
+                {
+                    return false;
+                }
                 user.Status = 0;
-            }else
-            {
-                user.Status = 1;
+                user.Delete_at = DateTime.ParseExact(DateTime.Now.Date.ToString("dd/MM/yyyy"), "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                try
+                {
+                    context.SaveChanges();
+                    return true;
+                }
+                catch (DbUpdateException ex)
+                {
+                    throw new Exception("Đã có lỗi xảy ra, vui lòng thử lại sau", ex);
+                }
             }
         }
         public int GetByCodition(string Username, string Email)

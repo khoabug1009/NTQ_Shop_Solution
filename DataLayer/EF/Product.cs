@@ -10,7 +10,8 @@ namespace DataLayer.EF
     {
         public int ID { get; set; }
 
-        public int? CategoryID { get; set; }
+        [StringLength(50)]
+        public string ProductName { get; set; }
 
         [StringLength(50)]
         public string Slug { get; set; }
@@ -34,5 +35,8 @@ namespace DataLayer.EF
         public DateTime? Update_at { get; set; }
 
         public DateTime? Delete_at { get; set; }
+
+        [StringLength(100)]
+        public string Path { get; set; }
     }
 }

@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace NTQ_Solution.Areas.Admin.Controllers
 {
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         // GET: Admin/User
         public ActionResult Index()
@@ -49,7 +49,7 @@ namespace NTQ_Solution.Areas.Admin.Controllers
                     {
                         UserName = model.Username,
                         Email = model.Email,
-                        PassWord = Encryptor.MD5Hash( model.Password),
+                        PassWord =  model.Password,
                         Create_at = DateTime.Now,
                         Status = 1,
                         Role = temp
@@ -99,20 +99,28 @@ namespace NTQ_Solution.Areas.Admin.Controllers
                 var user = new User {
                     ID = model.ID,
                     UserName = model.Username,
-                    PassWord = Encryptor.MD5Hash(model.Password),
+                    PassWord = model.Password,
                 };
                 dao.Update(user);
                 return RedirectToAction("Index", "ListUser");
             }
             return View("Update");
         }
-        [HttpPost]
+        
         public ActionResult Delete(int id)
         {
-            var dao = new UserDao();
-            dao.Delete(id);
+            UserDao userDao = new UserDao();
+            bool success = userDao.Delete(id)
+;
+            if (success)
+            {
+                TempData["DeleteUserMessage"] = "Xoá thành công";
+            }
+            else
+            {
+                TempData["DeleteUserMessage"] = "Xoá không thành công";
+            }
             return RedirectToAction("Index", "ListUser");
         }
-
     }
 }

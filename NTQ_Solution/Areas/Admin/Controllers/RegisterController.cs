@@ -27,7 +27,7 @@ namespace NTQ_Solution.Areas.Admin.Controllers
                 {
                     var user = new User { 
                         Email = rigisterModel.Email,
-                        PassWord = Encryptor.MD5Hash(rigisterModel.Password),
+                        PassWord = rigisterModel.Password,
                         UserName = rigisterModel.Username,
                         Create_at = DateTime.Now,
                         Role = 0,

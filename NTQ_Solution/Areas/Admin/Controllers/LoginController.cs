@@ -21,8 +21,8 @@ namespace NTQ_Solution.Areas.Admin.Controllers
             if(ModelState.IsValid)
             {
                 var dao = new UserDao();
-                var result = dao.Login(model.Email, Encryptor.MD5Hash(model.Password));
-                if(result==1)
+                var result = dao.Login(model.Email, model.Password);
+                if(result == 1)
                 {
                     var user = dao.GetByEmail(model.Email);
                     var userSession = new UserLogin();
@@ -32,7 +32,7 @@ namespace NTQ_Solution.Areas.Admin.Controllers
                     Session.Add(CommonConstant.USER_SESSION, userSession);
                     if(user.Role == 1)
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "HomeAdmin");
                     }else
                     {
                         return RedirectToAction("Index", "HomeUser");
@@ -41,11 +41,11 @@ namespace NTQ_Solution.Areas.Admin.Controllers
                 }
                 else if(result == 0)
                 {
-                    ModelState.AddModelError("", "Tài sản không tồn tại, sai email");
+                    ModelState.AddModelError("", "Tài khoản không tồn tại, sai email");
                 }
                 else if (result == -1)
                 {
-                    ModelState.AddModelError("", "Tài sản đang bị khóa");
+                    ModelState.AddModelError("", "Tài khoản đang bị khóa");
                 }
                 else if (result == -2)
                 {
