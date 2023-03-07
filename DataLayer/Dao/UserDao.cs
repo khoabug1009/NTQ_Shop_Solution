@@ -76,6 +76,7 @@ namespace DataLayer.Dao
                 user.UserName = entity.UserName;
                 user.PassWord = entity.PassWord;
                 user.Update_at = DateTime.Now;
+                user.Role = entity.Role;
                 db.SaveChanges();
             }
         }

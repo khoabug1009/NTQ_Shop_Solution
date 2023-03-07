@@ -7,11 +7,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace NTQ_Solution.Areas.Admin.Controllers
 {
     public class UserController : BaseController
     {
+       
+
         // GET: Admin/User
         public ActionResult Index()
         {
@@ -78,7 +82,7 @@ namespace NTQ_Solution.Areas.Admin.Controllers
             if (temp.Role == 1)
             {
                 role = true;
-            }else if(temp.Role == 0)
+            }else
             {
                 role = false;
             }
@@ -87,6 +91,7 @@ namespace NTQ_Solution.Areas.Admin.Controllers
                 Email = temp.Email,
                 Username = temp.UserName,
                 Password = temp.PassWord,
+                Role = role
             };
             return View(user);
         }
@@ -96,13 +101,25 @@ namespace NTQ_Solution.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var dao = new UserDao();
+                int temp;
+                if (model.Role)
+                {
+                    temp = 1;
+                }
+                else
+                {
+                    temp = 0;
+                }
                 var user = new User {
                     ID = model.ID,
                     UserName = model.Username,
                     PassWord = model.Password,
+                    Role = temp
                 };
                 dao.Update(user);
                 return RedirectToAction("Index", "ListUser");
+                
+
             }
             return View("Update");
         }

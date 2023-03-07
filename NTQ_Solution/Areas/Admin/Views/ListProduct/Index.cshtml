@@ -1,0 +1,117 @@
+﻿
+@model PagedList.IPagedList<DataLayer.EF.Product>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section header{
+
+}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">List Product</h6>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("Index", "ListProduct", FormMethod.Get))
+                    {
+                        <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                            <div class="input-group" style="margin-top:20px;margin-bottom:20px">
+
+                                <input type="text" value="@ViewBag.SearchString" class="form-control bg-light border-0 small" placeholder="search" name="searchString"
+                                       aria-label="Search" aria-describedby="basic-addon2" style="margin-right:5px">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="fas fa-search fa-sm"></i>
+                                    </button>
+
+                                </div>
+                            </div>
+                            <div class="form-group filter1" style=" display: inline-block; width: 8%; margin: 1px;">
+                                @Html.CheckBox("trending", false)
+                                @Html.Label("Trending", new { @class = "control-label" })
+                            </div>
+
+
+                        </form>
+
+                    }
+
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered" style="text-align: " id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>ProductName</th>
+                                    <th>Slug</th>
+                                    <th>CreateDate</th>
+                                    <th>UpdateDate</th>
+                                    <th>Price</th>
+                                    <th>Image</th>
+                                    <th>Views</th>
+                                    <th>Status</th>
+                                    <th>Trending</th>
+                                    <th>
+                                        Feature
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @if (Model.Count == 0)
+                                {
+                                    <tr>
+                                        <td colspan="10" style="text-align: center">NoDaTa</td>
+                                    </tr>
+                                }
+                                @if (Model.Count != 0)
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        <tr id="row_@item.ID">
+                                            <td>@item.ProductName</td>
+                                            <td>@item.Slug</td>
+                                            <td>@(item.Create_at == null ? "" : item.Create_at.Value.ToString("dd/mm/yyyy"))</td>
+                                            <td>@(item.Update_at == null ? "" : item.Update_at.Value.ToString("dd/mm/yyyy"))</td>
+                                            <td>@item.Price</td>
+                                            <td><img style="border: 1px solid #ddd; border-radius: 4px; padding: 5px; width: 150px; " src="@item.Path" /></td>
+                                            <td>@item.NumberViews</td>
+                                            <td><a style="text-decoration:none" href="#" class="btn-active" data-id="@item.ID">@(item.Status == 1 ? "Active" : "Deleted")</a></td>
+                                            <td><a style="text-decoration:none" href="#" class="btn-active" data-id="@item.ID">@(item.Trending == true ? "Trending" : "Not Trend")</a></td>
+                                            <td>
+                                                <a class="btn btn-success" style="text-decoration:none" href="/Admin/Product/Update/@item.ID"><ic class="fa fa-edit"></ic> Edit</a> |
+                                                <a class="btn btn-danger" style="text-decoration:none" href="@Url.Action("Delete", "Product", new { id = item.ID })" onclick="return confirm('Do you Want to delete?')"><i class="fa fa-trash"></i> Delete</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, @searchString = ViewBag.SearchString, trending = ViewBag.Trending }))
+                    </div>
+                    <script>
+                        // Lấy tất cả các phần tử có class là "password"
+                        var passwordFields = document.querySelectorAll(".password");
+
+                        // Với mỗi phần tử, thay thế giá trị bằng dấu *
+                        passwordFields.forEach(function (field) {
+                            field.textContent = "*".repeat(field.textContent.length);
+                        });
+                    </script>
+
+                    <div class="input-group-append">
+                        <a class="btn btn-primary" href="/Admin/Product/Create">Create Product</a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
