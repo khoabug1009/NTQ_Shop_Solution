@@ -1,8 +1,15 @@
 ﻿@model NTQ_Solution.Areas.Admin.Data.RigisterModel
-@{
+@if (Model.Role == true)
+{
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
+else
+{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutUser.cshtml";
+}
+
 
 <section class="vh-100" style="background-color: #f4f5f7;">
     <div class="container py-5 h-300">
@@ -15,7 +22,8 @@
                             <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
                                  alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
                             <h5>@Model.Email</h5>
-                            <p>@(Model.Role == true ? "Admin":"User")
+                            <p>
+                                @(Model.Role == true ? "Admin":"User")
                             </p>
                             <i class="far fa-edit mb-5"></i>
                         </div>
@@ -27,12 +35,12 @@
                                     <div class="col-6 mb-3">
                                         <h6>Email</h6>
 
-                                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" , @readonly = "true" } })
                                         @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-6 mb-3">
                                         <h6>UserName</h6>
-                                        @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
                                         @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
@@ -40,12 +48,14 @@
                                 <div class="row pt-1">
                                     <div class="col-6 mb-3">
                                         <h6>PassWord</h6>
-                                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                                        <input type="password" placeholder="Password" id="password" class="form-control" name="password" value="@Model.Password" readonly ="true" />
                                         @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                        <i class="fa fa-eye" id="eye"></i>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-start">
-                                    <a class="btn btn-success" style="text-decoration:none" href="/Admin/User/Update/@Model.ID"><ic class="fa fa-edit"></ic> Update</a>
+                                    <a class="btn btn-success" style="text-decoration:none" href="/Admin/MyProFile/Update/@Model.ID"><ic class="fa fa-edit"></ic> Update</a>
+                                    <a class="btn btn-danger" style="text-decoration:none" href="/Admin/MyProFile/Logout"><ic class="fa fa-cancel"></ic> Logout</a>
                                 </div>
                             </div>
                         </div>
@@ -55,3 +65,30 @@
         </div>
     </div>
 </section>
+<script>
+    function show() {
+        var p = document.getElementById('password');
+        p.setAttribute('type', 'text');
+    }
+
+    function hide() {
+        var p = document.getElementById('password');
+        p.setAttribute('type', 'password');
+    }
+
+    var pwShown = 0;
+
+    document.getElementById("eye").addEventListener("click", function () {
+        if (pwShown == 0) {
+            pwShown = 1;
+            document.getElementById("eye").classList.add("fa-eye-slash");
+            document.getElementById("eye").classList.remove("fa-eye");
+            show();
+        } else {
+            pwShown = 0;
+            document.getElementById("eye").classList.add("fa-eye");
+            document.getElementById("eye").classList.remove("fa-eye-slash");
+            hide();
+        }
+    }, false);
+</script>

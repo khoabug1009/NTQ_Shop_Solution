@@ -60,7 +60,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dao\ProductDAO.cs" />
+    <Compile Include="Dao\ReviewDao.cs" />
     <Compile Include="Dao\UserDao.cs" />
+    <Compile Include="Dao\WishListDao.cs" />
     <Compile Include="EF\Category.cs" />
     <Compile Include="EF\Media.cs" />
     <Compile Include="EF\NTQDBContext.cs" />
@@ -68,6 +70,7 @@
     <Compile Include="EF\Review.cs" />
     <Compile Include="EF\User.cs" />
     <Compile Include="EF\Wishlist.cs" />
+    <Compile Include="Model\ReviewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

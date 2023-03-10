@@ -18,8 +18,10 @@ namespace NTQ_Solution.Areas.Admin.Data
         public string Password { get; set; }
         [Required(ErrorMessage = "Hãy nhập nhập comfirmPasword ")]
         public string ComfimPassword { get; set; }
-        [Required(ErrorMessage = "không được bỏ trống UserName")]
+        [Required(ErrorMessage = "UserName không được để trống!")]
+        [RegularExpression(@"^.{2,10}$", ErrorMessage = "{0} chỉ từ 2 đến 10 ký tự.")]
         public string Username { get; set; }
         public bool Role { get; set; }
+        public bool Status { get; set; }
     }
 }

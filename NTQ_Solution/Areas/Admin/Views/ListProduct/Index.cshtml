@@ -76,8 +76,8 @@
                                         <tr id="row_@item.ID">
                                             <td>@item.ProductName</td>
                                             <td>@item.Slug</td>
-                                            <td>@(item.Create_at == null ? "" : item.Create_at.Value.ToString("dd/mm/yyyy"))</td>
-                                            <td>@(item.Update_at == null ? "" : item.Update_at.Value.ToString("dd/mm/yyyy"))</td>
+                                            <td>@(item.Create_at == null ? "" : item.Create_at.Value.ToString("dd/MM/yyyy"))</td>
+                                            <td>@(item.Update_at == null ? "" : item.Update_at.Value.ToString("dd/MM/yyyy"))</td>
                                             <td>@item.Price</td>
                                             <td><img style="border: 1px solid #ddd; border-radius: 4px; padding: 5px; width: 150px; " src="@item.Path" /></td>
                                             <td>@item.NumberViews</td>

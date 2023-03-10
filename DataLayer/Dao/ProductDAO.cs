@@ -19,45 +19,118 @@ namespace DataLayer.Dao
         }
         public int Insert(Product entity)
         {
-            db.Products.Add(entity);
-            db.SaveChanges();
-            return entity.ID;
+            try
+            {
+                db.Products.Add(entity);
+                db.SaveChanges();
+                return entity.ID;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+        public void UpdateView(int id)
+        {
+            try
+            {
+                var product = db.Products.SingleOrDefault(x => x.ID == id);
+                product.NumberViews = product.NumberViews + 1;
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
         }
         public Product GetByID(int id)
         {
-            return db.Products.SingleOrDefault(x => x.ID == id);
+            try
+            {
+                return db.Products.SingleOrDefault(x => x.ID == id);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
         }
         public IEnumerable<Product> ListPaging(string searchString, int page, int pageSize)
         {
-            IQueryable<Product> model = db.Products;
-            if (!string.IsNullOrEmpty(searchString))
+            try
             {
-                model = model.Where(x => x.ProductName.Contains(searchString) || x.Slug.Contains(searchString)).OrderByDescending(x => x.NumberViews);
-                if (model == null)
+
+                IQueryable<Product> model = db.Products;
+                if (!string.IsNullOrEmpty(searchString))
                 {
-                    return null;
+                    model = model.Where(x => x.ProductName.Contains(searchString) || x.Slug.Contains(searchString)).OrderByDescending(x => x.NumberViews);
+                    if (model == null)
+                    {
+                        return null;
+                    }
                 }
+                return model.OrderBy(x => x.Create_at ).Where(x => x.Status == 1).
+                    ToPagedList(page, pageSize);
             }
-            return model.OrderBy(x => x.Create_at).ToPagedList(page, pageSize);
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+        public IEnumerable<Product> ListPagingall(string searchString, int page, int pageSize)
+        {
+            try
+            {
+
+                IQueryable<Product> model = db.Products;
+                if (!string.IsNullOrEmpty(searchString))
+                {
+                    model = model.Where(x => x.ProductName.Contains(searchString) || x.Slug.Contains(searchString)).OrderByDescending(x => x.NumberViews);
+                    if (model == null)
+                    {
+                        return null;
+                    }
+                }
+                return model.OrderBy(x => x.Create_at).
+                    ToPagedList(page, pageSize);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
         }
         public void Update(Product entity)
         {
-            var products = db.Products.Find(entity.ID);
-            if (products != null)
+            try
             {
-                products.ProductName = entity.ProductName;
-                products.Slug = entity.Slug;
-                products.Update_at = DateTime.Now;
-                products.Price = entity.Price;
-                products.Path = entity.Path;
-                products.NumberViews = entity.NumberViews;
-                products.Status = entity.Status;
-                products.Detail = entity.Detail;
-                db.SaveChanges();
+                var products = db.Products.Find(entity.ID);
+                if (products != null)
+                {
+                    products.ProductName = entity.ProductName;
+                    products.Slug = entity.Slug;
+                    products.Update_at = DateTime.Now;
+                    products.Price = entity.Price;
+                    products.Path = entity.Path;
+                    products.NumberViews = entity.NumberViews;
+                    products.Status = entity.Status;
+                    products.Detail = entity.Detail;
+                    products.Trending = entity.Trending;
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
             }
         }
         public bool Delete(int id)
         {
+
             using (var context = new NTQDBContext())
             {
                 var product = context.Products.Find(id);
@@ -77,6 +150,7 @@ namespace DataLayer.Dao
                     throw new Exception("Đã có lỗi xảy ra, vui lòng thử lại sau", ex);
                 }
             }
+
         }
     }
 }

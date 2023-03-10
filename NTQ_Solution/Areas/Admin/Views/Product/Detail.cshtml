@@ -1,0 +1,92 @@
+﻿@model NTQ_Solution.Areas.Admin.Data.ProductModel
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var listreview = (List<DataLayer.Model.ReviewModel>)ViewBag.ListReview;
+}
+<link href="~/Content/detail.css" rel="stylesheet" />
+<script src="~/assests/client/js/controller/ReviewController.js"></script>
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="main-img">
+                <img class="img-fluid" src="@Model.Path" alt="ProductS">
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="main-description px-2">
+
+                <div class="product-title text-bold my-3">
+                    @Model.ProductName
+                </div>
+
+
+                <div class="price-area my-4">
+                    <p class="old-price mb-1"><del>$100</del> <span class="old-price-discount text-danger">(20% off)</span></p>
+                    <p class="new-price text-bold mb-1">@Model.Price</p>
+                    <p class="text-secondary mb-1">(Additional tax may apply on checkout)</p>
+
+                </div>
+
+
+                <div class="buttons d-flex my-5">
+                    <div class="block">
+                        <a href="#" class="shadow btn custom-btn ">Wishlist</a>
+                    </div>
+                    <div class="block">
+                        <button class="shadow btn custom-btn">Buy</button>
+                    </div>
+
+                    <div class="block quantity">
+                        <input type="number" class="form-control" id="cart_quantity" value="1" min="0" max="5" placeholder="Enter email" name="cart_quantity">
+                    </div>
+                </div>
+
+
+
+
+            </div>
+
+            <div class="product-details my-4">
+                <p class="details-title text-color mb-1">Product Details</p>
+                <p class="description">@Model.Detail</p>
+            </div>
+
+            <div id="div_allreview">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="comments-list">
+                            <p class="details-title text-color mb-1">Comment</p>
+                            @foreach (var item in listreview)
+                            {
+                                <div class="media">
+                                    <p class="pull-right"><small>@(item.CreateAt == null ? "" : item.CreateAt.Value.ToString("dd/MM/yyyy"))</small></p>
+                                    <a class="nav-link dropdown-toggle" role="button"
+                                       aria-haspopup="true" aria-expanded="false">
+                                        <img class="img-profile rounded-circle"
+                                             src="~/assests/admin/img/undraw_profile.svg" height="30px" width="30px">
+                                    </a>
+                                    <div class="media-body">
+                                        <h4 class="media-heading user_name">@item.UserName</h4>
+                                        <span style="font-size:35px;color:black">@item.Title</span>
+                                        <p><small><a href="">Like</a> - <a href="">Share</a></small></p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div>
+                <span><label>Review<span class="red">*</span></label></span>
+                <span><input type="text" id="txtReviewNew"> </input></span>
+            </div>
+
+            <button id="btnReviewNew" data-productid="@Model.ID" data-userid="@ViewBag.UserID">Review</button>
+
+        </div>
+    </div>
+</div>

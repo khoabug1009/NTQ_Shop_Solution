@@ -5,6 +5,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PagedList;
+using System.Data.Entity.Infrastructure;
+
 namespace NTQ_Solution.Areas.Admin.Controllers
 {
     public class ListProductController : BaseController
@@ -12,15 +14,22 @@ namespace NTQ_Solution.Areas.Admin.Controllers
         // GET: Admin/ListProduct
         public ActionResult Index(string searchString,bool trending = false, int page =1, int pageSize = 10)
         {
-            var dao = new ProductDAO();
-            var model = dao.ListPaging(searchString, page, pageSize);
-            if (trending)
+            try
             {
-                model = model.Where(x => x.Trending == true).ToPagedList(page, pageSize);
+                var dao = new ProductDAO();
+                var model = dao.ListPagingall(searchString, page, pageSize);
+                if (trending)
+                {
+                    model = model.Where(x => x.Trending == true).ToPagedList(page, pageSize);
+                }
+                ViewBag.SearchString = searchString;
+                ViewBag.Trending = trending;
+                return View(model);
             }
-            ViewBag.SearchString = searchString;
-            ViewBag.Trending = trending;
-            return View(model);
+            catch (DbUpdateException ex)
+            {
+                throw new Exception("Đã có lỗi xảy ra, vui lòng thử lại sau", ex);
+            }
         }
     }
 }
