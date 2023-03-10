@@ -107,7 +107,7 @@ namespace NTQ_Solution.Areas.Admin.Controllers
                 {
                     status = false;
                 }
-                var user = new RigisterModel
+                var rigisterModel = new RigisterModel
                 {
                     ID = temp.ID,
                     Email = temp.Email,
@@ -117,7 +117,7 @@ namespace NTQ_Solution.Areas.Admin.Controllers
                     Status = status
                 };
                 
-                return View(user);
+                return View(rigisterModel);
             }
             catch (DbUpdateException ex)
             {
@@ -125,11 +125,11 @@ namespace NTQ_Solution.Areas.Admin.Controllers
             }
         }
         [HttpPost]
-        public ActionResult Update(RigisterModel model)
+        public ActionResult Update(RigisterModel rigisterModel)
         {
             if (ModelState.IsValid)
             {
-                if (model.Password != model.ComfimPassword)
+                if (rigisterModel.Password != rigisterModel.ComfimPassword)
                 {
                     ModelState.AddModelError("", "ComfirmPassword chưa chính xác");
                 }
@@ -138,7 +138,7 @@ namespace NTQ_Solution.Areas.Admin.Controllers
                     var dao = new UserDao();
                     int temp;
                     int status;
-                    if (model.Role)
+                    if (rigisterModel.Role)
                     {
                         temp = 1;
                     }
@@ -146,7 +146,7 @@ namespace NTQ_Solution.Areas.Admin.Controllers
                     {
                         temp = 0;
                     }
-                    if (model.Status)
+                    if (rigisterModel.Status)
                     {
                         status = 0;
                     }
@@ -156,10 +156,10 @@ namespace NTQ_Solution.Areas.Admin.Controllers
                     }
                     var user = new User
                     {
-                        ID = model.ID,
-                        UserName = model.Username,
-                        PassWord = model.Password,
-                        Email = model.Email,
+                        ID = rigisterModel.ID,
+                        UserName = rigisterModel.Username,
+                        PassWord = rigisterModel.Password,
+                        Email = rigisterModel.Email,
                         Role = temp,
                         Status = status
                     };
@@ -169,7 +169,7 @@ namespace NTQ_Solution.Areas.Admin.Controllers
                 }
 
             }
-            return View(model);
+            return View(rigisterModel);
         }
 
         public ActionResult Delete(int id)

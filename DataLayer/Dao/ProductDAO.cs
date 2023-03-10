@@ -17,13 +17,13 @@ namespace DataLayer.Dao
         {
             db = new NTQDBContext();
         }
-        public int Insert(Product entity)
+        public int Insert(Product product)
         {
             try
             {
-                db.Products.Add(entity);
+                db.Products.Add(product);
                 db.SaveChanges();
-                return entity.ID;
+                return product.ID;
             }
             catch (Exception ex)
             {
@@ -103,22 +103,22 @@ namespace DataLayer.Dao
                 throw;
             }
         }
-        public void Update(Product entity)
+        public void Update(Product product)
         {
             try
             {
-                var products = db.Products.Find(entity.ID);
+                var products = db.Products.Find(product.ID);
                 if (products != null)
                 {
-                    products.ProductName = entity.ProductName;
-                    products.Slug = entity.Slug;
+                    products.ProductName = product.ProductName;
+                    products.Slug = product.Slug;
                     products.Update_at = DateTime.Now;
-                    products.Price = entity.Price;
-                    products.Path = entity.Path;
-                    products.NumberViews = entity.NumberViews;
-                    products.Status = entity.Status;
-                    products.Detail = entity.Detail;
-                    products.Trending = entity.Trending;
+                    products.Price = product.Price;
+                    products.Path = product.Path;
+                    products.NumberViews = product.NumberViews;
+                    products.Status = product.Status;
+                    products.Detail = product.Detail;
+                    products.Trending = product.Trending;
                     db.SaveChanges();
                 }
             }

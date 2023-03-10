@@ -15,9 +15,9 @@ namespace DataLayer.Dao
         {
             db = new NTQDBContext();
         }
-        public bool InsertReview(Review entity)
+        public bool InsertReview(Review review)
         {
-            db.Reviews.Add(entity);
+            db.Reviews.Add(review);
             db.SaveChanges();
             return true;
         }

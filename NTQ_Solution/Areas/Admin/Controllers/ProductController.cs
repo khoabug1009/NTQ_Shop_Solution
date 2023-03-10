@@ -110,7 +110,7 @@ namespace NTQ_Solution.Areas.Admin.Controllers
             }
         }
         [HttpPost]
-        public ActionResult Update(ProductModel model)
+        public ActionResult Update(ProductModel productModel)
         {
             try
             {
@@ -119,7 +119,7 @@ namespace NTQ_Solution.Areas.Admin.Controllers
                     var dao = new ProductDAO();
                     bool temp;
                     int status;
-                    if (model.Trending)
+                    if (productModel.Trending)
                     {
                         temp = true;
                     }
@@ -127,7 +127,7 @@ namespace NTQ_Solution.Areas.Admin.Controllers
                     {
                         temp = false;
                     }
-                    if (model.Status)
+                    if (productModel.Status)
                     {
                         status = 1;
                     }
@@ -137,14 +137,14 @@ namespace NTQ_Solution.Areas.Admin.Controllers
                     }
                     var product = new Product
                     {
-                        ID = model.ID,
-                        ProductName = model.ProductName,
-                        Slug = model.Slug,
-                        Detail = model.Detail,
-                        NumberViews = model.NumberViews,
+                        ID = productModel.ID,
+                        ProductName = productModel.ProductName,
+                        Slug = productModel.Slug,
+                        Detail = productModel.Detail,
+                        NumberViews = productModel.NumberViews,
                         Trending = temp,
-                        Price = model.Price,
-                        Path = model.Path,
+                        Price = productModel.Price,
+                        Path = productModel.Path,
                         Status = status
                     };
                     dao.Update(product);
@@ -187,7 +187,7 @@ namespace NTQ_Solution.Areas.Admin.Controllers
             {
                 var dao = new ProductDAO();
                 var temp = dao.GetByID(id);
-                var product = new ProductModel
+                var productModel = new ProductModel
                 {
                     ProductName = temp.ProductName,
                     Slug = temp.Slug,
@@ -200,7 +200,7 @@ namespace NTQ_Solution.Areas.Admin.Controllers
                 if (sessionUser != null) { ViewBag.UserID = sessionUser.UserID; }
                 ViewBag.ListReview = new ReviewDao().GetAllReview(id);
                 dao.UpdateView(id);
-                return View(product);
+                return View(productModel);
             }
             catch (DbUpdateException ex)
             {

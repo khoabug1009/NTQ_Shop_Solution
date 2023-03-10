@@ -22,13 +22,13 @@ namespace DataLayer.Dao
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public int Insert(User entity)
+        public int Insert(User user)
         {
             try
             {
-                db.Users.Add(entity);
+                db.Users.Add(user);
                 db.SaveChanges();
-                return entity.ID;
+                return user.ID;
             }
             catch (Exception ex)
             {
@@ -96,19 +96,18 @@ namespace DataLayer.Dao
                 throw;
             }
         }
-        public void Update(User entity)
+        public void Update(User user)
         {
             try
             {
-                var user = db.Users.Find(entity.ID);
-                if (user != null)
+                var userById = db.Users.Find(user.ID);
+                if (userById != null)
                 {
-                    user.Email = entity.Email;
-                    user.UserName = entity.UserName;
-                    user.PassWord = entity.PassWord;
-                    user.Update_at = DateTime.Now;
-                    user.Role = entity.Role;
-                    user.Status = entity.Status;
+                    userById.UserName = user.UserName;
+                    userById.PassWord = user.PassWord;
+                    userById.Update_at = DateTime.Now;
+                    userById.Status = user.Status;
+                    userById.Email = user.Email;
                     db.SaveChanges();
                 }
             }

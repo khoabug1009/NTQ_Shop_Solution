@@ -29,7 +29,7 @@ namespace NTQ_Solution.Areas.Admin.Controllers
                 {
                     role = false;
                 }
-                var result = new RigisterModel
+                var rigisterModel = new RigisterModel
                 {
                     ID = user.ID,
                     Email = user.Email,
@@ -37,7 +37,7 @@ namespace NTQ_Solution.Areas.Admin.Controllers
                     Role = role,
                     Username = user.UserName
                 };
-                return View(result);
+                return View(rigisterModel);
             }
             catch (DbUpdateException ex)
             {
@@ -76,15 +76,13 @@ namespace NTQ_Solution.Areas.Admin.Controllers
             }
         }
         [HttpPost]
-        public ActionResult Update(RigisterModel model)
+        public ActionResult Update(RigisterModel rigisterModel)
         {
             try
             {
-
-
                 if (ModelState.IsValid)
                 {
-                    if (model.Password != model.ComfimPassword)
+                    if (rigisterModel.Password != rigisterModel.ComfimPassword)
                     {
                         ModelState.AddModelError("", "ComfirmPassword chưa chính xác");
                     }
@@ -92,7 +90,7 @@ namespace NTQ_Solution.Areas.Admin.Controllers
                     {
                         var dao = new UserDao();
                         int temp;
-                        if (model.Role)
+                        if (rigisterModel.Role)
                         {
                             temp = 1;
                         }
@@ -102,10 +100,12 @@ namespace NTQ_Solution.Areas.Admin.Controllers
                         }
                         var user = new User
                         {
-                            ID = model.ID,
-                            UserName = model.Username,
-                            PassWord = model.Password,
-                            Role = temp
+                            ID = rigisterModel.ID,
+                            UserName = rigisterModel.Username,
+                            PassWord = rigisterModel.Password,
+                            Role = temp,
+                            Email = rigisterModel.Email,
+                            
                         };
                         dao.Update(user);
                         TempData["success"] = "Update succsess";
@@ -113,7 +113,7 @@ namespace NTQ_Solution.Areas.Admin.Controllers
                     }
 
                 }
-                return View(model);
+                return View(rigisterModel);
             }
             catch (DbUpdateException ex)
             {
