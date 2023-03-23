@@ -12,7 +12,7 @@ namespace NTQ_Solution.Areas.Admin.Controllers
     public class HomeUserController : BaseController
     {
         // GET: Admin/HomeUser
-        public ActionResult Index(string searchString, bool trending = false, int page = 1, int pageSize = 10)
+        public ActionResult Index(string searchString, bool trending = false, int page = 1, int pageSize = 2)
         {
             try
             {

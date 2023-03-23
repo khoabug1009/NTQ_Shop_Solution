@@ -2943,6 +2943,7 @@
     <Content Include="assests\admin\js\bootstrap.min.js.map" />
     <Content Include="Areas\Admin\Views\Product\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\MyProFile\Update.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\test.cshtml" />
     <None Include="Properties\PublishProfiles\IISProfile.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />

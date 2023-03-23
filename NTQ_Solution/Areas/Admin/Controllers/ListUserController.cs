@@ -12,7 +12,7 @@ namespace NTQ_Solution.Areas.Admin.Controllers
     public class ListUserController : BaseController
     {
         // GET: Admin/ListUser
-        public ActionResult Index(string searchString, bool roleFilter = false , bool statustrue = false, bool statusfalse = false, int page = 1, int pageSize = 10)
+        public ActionResult Index(string searchString, bool roleFilter = false , bool statustrue = false, bool statusfalse = false, int page = 1, int pageSize = 2)
         {
             try
             {
